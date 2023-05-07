@@ -1,0 +1,3 @@
+FROM ubuntu
+WORKDIR /custom
+RUN echo "CUSTOM=1" >> env.txt

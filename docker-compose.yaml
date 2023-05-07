@@ -1,0 +1,30 @@
+services:
+  injector:
+    container_name: injector
+    build: 
+      context: .
+      dockerfile: ./injector-dockerfile
+    volumes:
+      - ${PWD}/data:/data      
+    command: cp -r /custom/env.txt /data/
+  service:
+    container_name: service
+    image: nginx
+    depends_on:
+      injector:
+        condition: service_completed_successfully
+    env_file:
+      - ${PWD}/data/env.txt
+    command: printenv
+  cleanup:  
+    depends_on:
+      service:
+        condition: service_started
+    container_name: cleanup
+    build: 
+      context: .
+      dockerfile: ./cleanup-dockerfile
+    volumes:
+      - ${PWD}/data:/data      
+    command: cp -r /custom/env.txt /data/
+    
