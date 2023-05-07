@@ -9,22 +9,22 @@ services:
     command: cp -r /custom/env.txt /data/
   service:
     container_name: service
-    image: nginx
+    image: ubuntu
     depends_on:
       injector:
         condition: service_completed_successfully
     env_file:
       - ${PWD}/data/env.txt
-    command: printenv
-  cleanup:  
-    depends_on:
-      service:
-        condition: service_started
-    container_name: cleanup
-    build: 
-      context: .
-      dockerfile: ./cleanup-dockerfile
-    volumes:
-      - ${PWD}/data:/data      
-    command: cp -r /custom/env.txt /data/
+    command: env
+#  cleanup:  
+#    depends_on:
+#      service:
+#        condition: service_started
+#    container_name: cleanup
+#    build: 
+#      context: .
+#      dockerfile: ./cleanup-dockerfile
+#    volumes:
+#      - ${PWD}/data:/data      
+#    command: cp -r /custom/env.txt /data/
     
